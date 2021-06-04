@@ -7,9 +7,9 @@ namespace LimestoneDigital.NumberMetamorphoses
 {
     public class ValueTransformer : IValueTransformer
     {
-
         public string Transform(string value)
         {
+            
             string result = "";
             if (IsDigital(value))
             {
@@ -47,6 +47,7 @@ namespace LimestoneDigital.NumberMetamorphoses
                         {
                             if (countOfSimvol > 0)
                                 result += "-" + numbersInt[number + 1];
+                            break;
                         }
                         countOfSimvol++;
                     }
@@ -57,29 +58,31 @@ namespace LimestoneDigital.NumberMetamorphoses
             return result;
         }
 
-
         public bool IsDigital(string letters)
         {
-
+            if (letters is null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (string.IsNullOrEmpty(letters))
+            {
+                throw new ArgumentException();
+            }
             foreach (char number in letters)
             {
-               
-                    if (number == '0' || number > '7')
-                    {
-
-                        throw new ArgumentOutOfRangeException();
-                    }
-
-                    if (number < '0' || number > '9' || number.ToString() == "")
-                    {
-                        throw new ArgumentException();
-                    }
-                    if (string.IsNullOrEmpty(number.ToString()))
-                    {
-                        throw new ArgumentNullException();
-                    }
+                if (!char.IsNumber(number))
+                {
+                    throw new ArgumentException();
+                }
+                if (number == '0' || number > '7')
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                if (number < '0' || number > '9' || number.ToString() == "")
+                {
+                    throw new ArgumentException();
+                }
             }
-
             return true;
         }
     }
